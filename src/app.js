@@ -18,10 +18,14 @@ Array.from(operands)
         calculator.updatePreviousNumberAsText(e.currentTarget.textContent);
         calculator.updateDisplay();
     }))
+
 calculateBtn.addEventListener('click', () => {
+    if (!calculator.previousOperandAsText) return;
+
     calculator.compute(calculator.operation);
     calculator.updateResult();
     calculator.updateDisplay();
+    calculator.allClear();
 })
 
 deleteBtn.addEventListener('click', () => {
@@ -35,25 +39,23 @@ allClearBtn.addEventListener('click', () => {
 })
 
 const calculator = {
-    previousOperand: null,
-    currentOperand: null,
+    // previousOperand: null,
+    // currentOperand: null,
     operation: null,
     previousOperandAsText: '',
     currentOperandAsText: '',
     updateResult() {
-        calculator.currentOperandAsText = calculator.previousOperandAsText;
+        calculator.currentOperandAsText = calculator.previousOperandAsText.toString();
         calculator.previousOperandAsText = '';
         calculator.operation = null;
     },
     delete() {
         calculator.currentOperandAsText = calculator.currentOperandAsText.slice(0, -1);
-        calculator.updateDisplay();
     },
     allClear() {
         calculator.currentOperandAsText = '';
         calculator.previousOperandAsText = '';
         calculator.operation = null;
-        calculator.updateDisplay();
     },
     appendNumber(number) {
         if (calculator.currentOperandAsText === '' && number === '.') {
@@ -61,17 +63,26 @@ const calculator = {
             return;
         }
         if (calculator.currentOperandAsText.includes('.') && number === '.') return;
-        calculator.currentOperandAsText += number;
+        calculator.currentOperandAsText += number.toString();
     },
     updateDisplay() {
-        currentValueEl.textContent = calculator.currentOperandAsText;
+        if (calculator.currentOperandAsText.includes('.')) {
+            let [beforeDecimal, afterDecimal] = calculator.currentOperandAsText.split('.');
+            currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr') + '.' + afterDecimal;
+        } else if (!calculator.currentOperandAsText) {
+            currentValueEl.textContent = '';
+        } else if (!calculator.currentOperandAsText.includes('.')) {
+            currentValueEl.textContent = Number(calculator.currentOperandAsText).toLocaleString('fr')
+        }
+        // currentValueEl.textContent = Number(calculator.currentOperandAsText).toLocaleString('fr');
         if (calculator.previousOperandAsText && calculator.operation) {
             previousValueEl.textContent = calculator.previousOperandAsText + ' ' + calculator.operation;
-        } else if(!calculator.previousOperandAsText || !calculator.operation) {
+        } else if (!calculator.previousOperandAsText || !calculator.operation) {
             previousValueEl.textContent = '';
         }
     },
     updatePreviousNumberAsText(operation) {
+
         if (!calculator.operation) {
             calculator.operation = operation;
             calculator.previousOperandAsText = calculator.currentOperandAsText;
@@ -86,6 +97,7 @@ const calculator = {
         }
     },
     compute(operation) {
+
         let result;
         switch (operation) {
             case '÷':
@@ -101,8 +113,7 @@ const calculator = {
                 result = parseFloat(calculator.previousOperandAsText) - parseFloat(calculator.currentOperandAsText);
                 break;
         }
-        calculator.previousOperandAsText = result;
+        calculator.previousOperandAsText = result.toString();
         calculator.currentOperandAsText = '';
-        calculator.updateDisplay();
     }
 }
