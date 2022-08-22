@@ -23,7 +23,7 @@ calculateBtn.addEventListener('click', () => {
     if (!calculator.previousOperandAsText) return;
 
     calculator.compute(calculator.operation);
-    calculator.updateResult();
+    calculator.finalResult();
     calculator.updateDisplay();
     calculator.allClear();
 })
@@ -39,12 +39,10 @@ allClearBtn.addEventListener('click', () => {
 })
 
 const calculator = {
-    // previousOperand: null,
-    // currentOperand: null,
     operation: null,
     previousOperandAsText: '',
     currentOperandAsText: '',
-    updateResult() {
+    finalResult() {
         calculator.currentOperandAsText = calculator.previousOperandAsText.toString();
         calculator.previousOperandAsText = '';
         calculator.operation = null;
@@ -74,7 +72,7 @@ const calculator = {
         } else if (!calculator.currentOperandAsText.includes('.')) {
             currentValueEl.textContent = Number(calculator.currentOperandAsText).toLocaleString('fr')
         }
-        // currentValueEl.textContent = Number(calculator.currentOperandAsText).toLocaleString('fr');
+        
         if (calculator.previousOperandAsText && calculator.operation) {
             previousValueEl.textContent = calculator.previousOperandAsText + ' ' + calculator.operation;
         } else if (!calculator.previousOperandAsText || !calculator.operation) {
