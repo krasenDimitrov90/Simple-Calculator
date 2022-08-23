@@ -47,24 +47,22 @@ export const calc = {
             previousValueEl.textContent = '';
         }
     },
-    updatePreviousNumberAsText(operation) {
+    updateOperation(operation) {
 
-        if (!calc.operation) {
+        if (!calc.operation && calc.currentOperandAsText) {
             calc.operation = operation;
             calc.previousOperandAsText = calc.currentOperandAsText;
             calc.currentOperandAsText = '';
             
-        } else if (calc.currentOperandAsText === '') {
+        } else if (calc.currentOperandAsText === '' && calc.previousOperandAsText) {
             calc.operation = operation;
             
         } else if (calc.currentOperandAsText !== '') {
-            calc.compute(calc.operation);
+            // calc.compute(calc.operation);
             calc.operation = operation;
         }
     },
     compute(operation) {
-
-        if(!calc.currentOperandAsText || !calc.previousOperandAsText) return;
 
         let result;
         switch (operation) {

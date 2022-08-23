@@ -18,12 +18,16 @@ Array.from(numbers)
 
 Array.from(operands)
     .forEach(operand => operand.addEventListener('click', (e) => {
-        calculator.updatePreviousNumberAsText(e.currentTarget.textContent);
+        console.log(calculator.operation);
+        if(calculator.currentOperandAsText && calculator.previousOperandAsText) {
+            calc.compute(calculator.operation);
+        }
+        calculator.updateOperation(e.currentTarget.textContent);
         calculator.updateDisplay(currentValueEl, previousValueEl);
     }))
 
 calculateBtn.addEventListener('click', () => {
-    if (!calculator.previousOperandAsText) return;
+    if (!calculator.currentOperandAsText || !calculator.previousOperandAsText) return;
 
     calculator.compute(calculator.operation);
     calculator.finalResult();
