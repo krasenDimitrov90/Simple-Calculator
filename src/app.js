@@ -18,7 +18,7 @@ Array.from(numbers)
 
 Array.from(operands)
     .forEach(operand => operand.addEventListener('click', (e) => {
-        console.log(calculator.operation);
+
         if(calculator.currentOperandAsText && calculator.previousOperandAsText) {
             calc.compute(calculator.operation);
         }
@@ -32,7 +32,6 @@ calculateBtn.addEventListener('click', () => {
     calculator.compute(calculator.operation);
     calculator.finalResult();
     calculator.updateDisplay(currentValueEl, previousValueEl);
-    calculator.allClear();
 })
 
 deleteBtn.addEventListener('click', () => {

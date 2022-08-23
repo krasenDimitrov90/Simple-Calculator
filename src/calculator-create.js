@@ -58,7 +58,6 @@ export const calc = {
             calc.operation = operation;
             
         } else if (calc.currentOperandAsText !== '') {
-            // calc.compute(calc.operation);
             calc.operation = operation;
         }
     },
