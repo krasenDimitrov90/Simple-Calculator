@@ -1,11 +1,14 @@
 export const calc = {
     operation: null,
+    isEqualBtnClicked: false,
+    result: null,
     previousOperandAsText: '',
     currentOperandAsText: '',
     finalResult() {
 
-        calc.currentOperandAsText = calc.previousOperandAsText.toString();
+        calc.result = calc.previousOperandAsText.toString();
         calc.previousOperandAsText = '';
+        calc.currentOperandAsText = ''
         calc.operation = null;
     },
     delete() {
@@ -17,6 +20,8 @@ export const calc = {
         calc.currentOperandAsText = '';
         calc.previousOperandAsText = '';
         calc.operation = null;
+        calc.isEqualBtnClicked = false;
+        calc.result = null;
     },
     appendNumber(number) {
 
@@ -29,6 +34,18 @@ export const calc = {
     },
     updateDisplay(currentValueEl, previousValueEl) {
 
+        if (calc.isEqualBtnClicked) {
+            previousValueEl.textContent = '';
+            if(calc.result.includes('.')) {
+                let [beforeDecimal, afterDecimal] = calc.result.split('.');
+                currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr') + '.' + afterDecimal;
+                return;
+            } else if (!calc.currentOperandAsText.includes('.')) {
+                currentValueEl.textContent = Number(calc.result).toLocaleString('fr');
+                return;
+            }
+        }
+
         if (calc.currentOperandAsText.includes('.')) {
             let [beforeDecimal, afterDecimal] = calc.currentOperandAsText.split('.');
             currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr') + '.' + afterDecimal;
@@ -39,7 +56,7 @@ export const calc = {
         } else if (!calc.currentOperandAsText.includes('.')) {
             currentValueEl.textContent = Number(calc.currentOperandAsText).toLocaleString('fr')
         }
-        
+
         if (calc.previousOperandAsText && calc.operation) {
             previousValueEl.textContent = calc.previousOperandAsText + ' ' + calc.operation;
 
@@ -53,10 +70,10 @@ export const calc = {
             calc.operation = operation;
             calc.previousOperandAsText = calc.currentOperandAsText;
             calc.currentOperandAsText = '';
-            
+
         } else if (calc.currentOperandAsText === '' && calc.previousOperandAsText) {
             calc.operation = operation;
-            
+
         } else if (calc.currentOperandAsText !== '') {
             calc.operation = operation;
         }
@@ -80,5 +97,6 @@ export const calc = {
         }
         calc.previousOperandAsText = result.toString();
         calc.currentOperandAsText = '';
+        calc.operation = null;
     }
 }

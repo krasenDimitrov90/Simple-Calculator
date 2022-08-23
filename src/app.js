@@ -12,6 +12,10 @@ const currentValueEl = document.querySelector('.current-value');
 
 Array.from(numbers)
     .forEach(btn => btn.addEventListener('click', (e) => {
+        if (calculator.isEqualBtnClicked) {
+            calculator.allClear();
+            calculator.isEqualBtnClicked = false;
+        }
         calculator.appendNumber(e.currentTarget.textContent);
         calculator.updateDisplay(currentValueEl, previousValueEl);
     }))
@@ -19,6 +23,11 @@ Array.from(numbers)
 Array.from(operands)
     .forEach(operand => operand.addEventListener('click', (e) => {
 
+        if (calculator.isEqualBtnClicked) {
+            calculator.previousOperandAsText = calculator.result;
+            calculator.result = null;
+            calculator.isEqualBtnClicked = false;
+        }
         if(calculator.currentOperandAsText && calculator.previousOperandAsText) {
             calc.compute(calculator.operation);
         }
@@ -29,6 +38,7 @@ Array.from(operands)
 calculateBtn.addEventListener('click', () => {
     if (!calculator.currentOperandAsText || !calculator.previousOperandAsText) return;
 
+    calculator.isEqualBtnClicked = true;
     calculator.compute(calculator.operation);
     calculator.finalResult();
     calculator.updateDisplay(currentValueEl, previousValueEl);
