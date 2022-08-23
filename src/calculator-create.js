@@ -9,7 +9,7 @@ export const calc = {
         calc.operation = null;
     },
     delete() {
-        
+
         calc.currentOperandAsText = calc.currentOperandAsText.slice(0, -1);
     },
     allClear() {
@@ -63,6 +63,8 @@ export const calc = {
         }
     },
     compute(operation) {
+
+        if(!calc.currentOperandAsText || !calc.previousOperandAsText) return;
 
         let result;
         switch (operation) {
