@@ -34,28 +34,31 @@ export const calc = {
     },
     updateDisplay(currentValueEl, previousValueEl) {
 
+        // if (calc.isEqualBtnClicked) {
+        //     previousValueEl.textContent = '';
+        //     let [beforeDecimal, afterDecimal] = calc.result.split('.');
+        //     currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr');
+        //     if (afterDecimal) {
+        //         currentValueEl.textContent += '.' + afterDecimal;
+        //     }
+        //     return;
+        // }
+        if (!calc.currentOperandAsText) {
+            currentValueEl.textContent = '';
+        }
+        let [beforeDecimal, afterDecimal] = calc.currentOperandAsText.split('.') || calc.result.split('.');
+        currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr');
+        if (afterDecimal) {
+            currentValueEl.textContent += '.' + afterDecimal;
+        }
+
         if (calc.isEqualBtnClicked) {
             previousValueEl.textContent = '';
-            if(calc.result.includes('.')) {
-                let [beforeDecimal, afterDecimal] = calc.result.split('.');
-                currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr') + '.' + afterDecimal;
-                return;
-            } else if (!calc.currentOperandAsText.includes('.')) {
-                currentValueEl.textContent = Number(calc.result).toLocaleString('fr');
-                return;
-            }
+            return;
         }
-
-        if (calc.currentOperandAsText.includes('.')) {
-            let [beforeDecimal, afterDecimal] = calc.currentOperandAsText.split('.');
-            currentValueEl.textContent = Number(beforeDecimal).toLocaleString('fr') + '.' + afterDecimal;
-
-        } else if (!calc.currentOperandAsText) {
-            currentValueEl.textContent = '';
-
-        } else if (!calc.currentOperandAsText.includes('.')) {
-            currentValueEl.textContent = Number(calc.currentOperandAsText).toLocaleString('fr')
-        }
+        // } else if (!calc.currentOperandAsText.includes('.')) {
+        //     currentValueEl.textContent = Number(calc.currentOperandAsText).toLocaleString('fr')
+        // }
 
         if (calc.previousOperandAsText && calc.operation) {
             previousValueEl.textContent = calc.previousOperandAsText + ' ' + calc.operation;
